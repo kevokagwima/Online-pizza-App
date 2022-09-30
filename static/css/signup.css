@@ -1,0 +1,58 @@
+.container {
+  background-color: var(--yellow);
+  min-height: 90.5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  border-radius: 0.4rem;
+}
+
+form > h4 {
+  font-family: var(--font-2);
+  font-size: 2rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
+}
+
+form input {
+  padding: 1rem;
+  font-size: 1rem;
+  min-width: 20vw;
+  border: none;
+  outline: 1px solid grey;
+  border-radius: 0.3rem;
+  font-family: var(--font-1);
+}
+
+form button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: green;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  position: relative;
+  color: white;
+  font-family: var(--nav-links-font);
+  font-size: 18px;
+  margin-top: 0.8rem;
+}
+
+#account {
+  justify-self: center;
+  margin-top: 1rem;
+  font-family: var(--font-1);
+}
+
+#account a {
+  color: var(--highlight-bgcolor);
+}

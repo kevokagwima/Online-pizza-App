@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% block head %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>{% block title %}{% endblock %}</title>
+</head>
+{% endblock %}
+
+<body>
+  <header>
+    <div class="logo">
+      <a href="{% url 'index' %}">
+        <img src="{% static 'Images/logo.png' %}" alt="logo">
+      </a>
+    </div>
+    <div class="search">
+      <form action="#">
+        <input type="search" spellcheck="false" name="" required id="" placeholder="Search for any item">
+        <button type="submit">Search</button>
+      </form>
+    </div>
+    <div class="links">
+      {% if request.user.username %}
+      <a href="/order-details/{{ order.id }}">
+        <i class="fa fa-shopping-cart"></i>
+      </a>
+      <div class="login">
+        <img src="{{ user_profile.profileimg.url }}" alt="profile-img">
+      </div>
+      <div class="profile">
+        <a href="/profile/{{ request.user.username }}">My Profile</a>
+        <a href="#">My Orders</a>
+        <a href="#">Saved Items</a>
+        <a id="logout" href="{% url 'logout' %}">Logout</a>
+      </div>
+      {% else %}
+      <a href="{% url 'signup' %}">Sign Up</a>
+      <a href="{% url 'signin' %}">Sign In</a>
+      {% endif %}
+    </div>
+  </header>
+  {% if messages %}
+  {% for message in messages %}
+  <div class="tops">
+    <div class="alert alert-{{ message.tags }}">
+      <div class="side"></div>
+      <p id="flash">{{ message }}</p>
+      <span id="close">&times</span>
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% block body %}{% endblock %}
+
+  <script src="{% static 'Js/base.js' %}"></script>
+  {% block script %}{% endblock %}
+</body>
+
+</html>

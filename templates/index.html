@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block title %}
+Online Pizza | Home
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="dinner-platters">
+    <h4>Dinner Platters</h4>
+    <div class="items-box">
+      {% for dinner in dinner_platters %}
+      <a href="/description/{{ dinner.id }}">
+        <div class="item">
+          <div class="item--img">
+            <img src="{{ dinner.itemimg.url }}" alt="item image">
+          </div>
+          <div class="item--info">
+            <h4>{{ dinner.name }}</h4>
+            <a id="cart" href="/new-order/{{ dinner.id }}">
+              <i class="fa fa-shopping-cart"></i>
+            </a>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

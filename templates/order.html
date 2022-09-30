@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock %}
+
+{% block title %}
+Online Pizza | New order
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <h4>My Order</h4>
+  <div class="order-box">
+    <div class="order-items">
+      <h4>Items In Order</h4>
+      <hr>
+      {% for order in order_items %}
+      <div class="order--item">
+        <div class="item--image">
+          {% for dinner in dinners %}
+          {% if dinner.name == order.item %}
+          <img src="{{ dinner.itemimg.url }}" alt="{{ dinner }}">
+          {% endif %}
+          {% endfor %}
+        </div>
+        <div class="item--info">
+          <h4>{{ order.item }}</h4>
+        </div>
+        <div class="order--quantity">
+          <span>&times; {{ order.quantity }}</span>
+        </div>
+      </div>
+      {% empty %}
+      <p class="else">No Order Items</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+.container {
+  padding: 1rem;
+}
+
+.dinner-platters {
+  padding: 1rem;
+}
+
+.dinner-platters > h4 {
+  font-family: var(--font-1);
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+}
+
+.items-box {
+  margin-top: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  gap: 0.6rem;
+}
+
+.item {
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: whitesmoke;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  max-width: 14rem;
+}
+
+.item:hover {
+  scale: 1.02;
+}
+
+.item:hover #cart {
+  translate: 0;
+}
+
+.item--img {
+  max-height: 9rem;
+  min-width: 14rem;
+  max-width: 14rem;
+  background-color: var(--yellow);
+}
+
+.item--img img {
+  max-height: 8rem;
+  min-width: inherit;
+  max-width: inherit;
+  object-fit: contain;
+  object-position: center;
+}
+
+.item--info {
+  padding: 0.8rem;
+  position: relative;
+}
+
+.item--info h4 {
+  font-size: 1.1rem;
+  font-family: var(--font-4);
+  color: black;
+}
+
+#cart {
+  position: absolute;
+  inset: 1rem 1rem auto auto;
+  translate: 2rem;
+  transition: 0.2s ease-in-out;
+}
+
+#cart i {
+  color: var(--highlight-bgcolor);
+}

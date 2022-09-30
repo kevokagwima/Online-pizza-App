@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/description.css' %}">
+{% endblock %}
+
+{% block title %}
+Online Pizza | {{ dinner_platter.name }}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <h4 id="info">Product Description</h4>
+  <div class="product-box">
+    <div class="product--img">
+      <img src="{{ dinner_platter.itemimg.url }}" alt="{{ dinner_platter.name }}">
+    </div>
+    <div class="product--desc">
+      <h4>{{ dinner_platter.name }}</h4>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti,cum repellat omnis officiis aspernatur
+        eius
+        doloribus dolores, ducimus, accusantium iusto ipsam hic. Veritatis porro adipisci natus deleniti
+        architecto
+        odio
+        corporis.</p>
+      <span id="more-info">Select size</span>
+      <div class="item--sizes">
+        <div class="sizes size-1">
+          <p>Small</p>
+          <span>${{ dinner_platter.price_small }}</span>
+        </div>
+        <div class="sizes size-2">
+          <p>Large</p>
+          <span>${{ dinner_platter.price_large }}</span>
+        </div>
+      </div>
+      <a href="/new-order/{{ dinner_platter.id }}">
+        <button class="btn">Add to Cart</button>
+      </a>
+    </div>
+  </div>
+  <h4 id="info">Same Category</h4>
+  <div class="similar-box">
+    {% for similar in other_dinner_platter %}
+    {% if dinner_platter == similar %}
+    {% else %}
+    <a href="/description/{{ similar.id }}">
+      <div class="similar">
+        <div class="item">
+          <div class="item--img">
+            <img src="{{ similar.itemimg.url }}" alt="item image">
+          </div>
+          <div class="item--info">
+            <h4>{{ similar.name }}</h4>
+          </div>
+        </div>
+      </div>
+    </a>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

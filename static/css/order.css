@@ -1,0 +1,87 @@
+.container {
+  padding: 1rem 2rem;
+}
+
+.container > h4 {
+  font-size: 1.8rem;
+  font-family: var(--font-3);
+  text-align: center;
+}
+
+.order-box {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.order-box > div {
+  background-color: whitesmoke;
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  min-width: 40%;
+  height: max-content;
+}
+
+.order-box > div > h4 {
+  font-family: var(--font-3);
+  letter-spacing: 0.5px;
+  font-size: 1.2rem;
+}
+
+.order-box > div hr {
+  margin: 0.2rem 0 1rem;
+  border: none;
+  outline: 0.3px solid var(--yellow);
+}
+
+.order--item {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  background-color: #e7e7e7;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.order--item:hover {
+  background-color: var(--yellow);
+}
+
+.item--image {
+  height: 4rem;
+  aspect-ratio: 1/1;
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+
+.item--image img {
+  height: 4rem;
+  width: 4rem;
+  object-fit: contain;
+}
+
+.item--info > h4 {
+  font-family: var(--font-4);
+}
+
+.order--quantity {
+  flex-grow: 1;
+  text-align: right;
+}
+
+.order--quantity span {
+  font-family: var(--font-1);
+}
+
+.else {
+  color: var(--highlight-bgcolor);
+  text-align: center;
+  font-family: var(--font-1);
+  padding: 0.3rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}

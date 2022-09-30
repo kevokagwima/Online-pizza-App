@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+Online Pizza | Sign In
+{% endblock %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <form action="{% url 'signin' %}" , method="post">
+    {% csrf_token %}
+    <h4>Sign In</h4>
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" , required>
+    <button class="btn" type="submit">
+      <span class="button--text">SIGN IN</span>
+    </button>
+    <p id="account">Dont't have an account? <a href="{% url 'signup' %}">Register here</a></p>
+  </form>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'Js/signup.js' %}"></script>
+{% endblock %}
