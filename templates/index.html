@@ -17,7 +17,7 @@ Online Pizza | Home
     <h4>Dinner Platters</h4>
     <div class="items-box">
       {% for dinner in dinner_platters %}
-      <a href="/description/{{ dinner.id }}">
+      <a href="/description/{{ dinner.name }}">
         <div class="item">
           <div class="item--img">
             <img src="{{ dinner.itemimg.url }}" alt="item image">

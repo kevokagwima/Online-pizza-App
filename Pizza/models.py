@@ -1,7 +1,3 @@
-from distutils.command.upload import upload
-from email.policy import default
-from tkinter import CASCADE
-from turtle import ondrag
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
@@ -85,6 +81,9 @@ class Order(models.Model):
   id = models.UUIDField(primary_key=True, default=uuid.uuid4)
   user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
   status = models.TextField(max_length=10, default="Active")
+
+  def __str__(self):
+    return f"{self.id}-{self.status}"
 
 class Order_items(models.Model):
   item = models.TextField(max_length=20)

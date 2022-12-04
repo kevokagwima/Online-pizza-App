@@ -31,7 +31,11 @@
     <div class="links">
       {% if request.user.username %}
       <a href="/order-details/{{ order.id }}">
-        <i class="fa fa-shopping-cart"></i>
+        <i class="fa fa-shopping-cart">
+          {% if order_items %}
+          <span id="cart-item">{{ order_items|length }}</span>
+          {% endif %}
+        </i>
       </a>
       <div class="login">
         <img src="{{ user_profile.profileimg.url }}" alt="profile-img">
@@ -49,15 +53,15 @@
     </div>
   </header>
   {% if messages %}
-  {% for message in messages %}
   <div class="tops">
+    {% for message in messages %}
     <div class="alert alert-{{ message.tags }}">
       <div class="side"></div>
       <p id="flash">{{ message }}</p>
       <span id="close">&times</span>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
   {% endif %}
   {% block body %}{% endblock %}
 

@@ -10,29 +10,42 @@
 
 .order-box {
   margin-top: 2rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
   justify-content: center;
   gap: 3rem;
 }
 
 .order-box > div {
   background-color: whitesmoke;
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   border-radius: 0.4rem;
-  min-width: 40%;
   height: max-content;
 }
 
-.order-box > div > h4 {
-  font-family: var(--font-3);
+.order-items {
+  min-width: 40vw;
+}
+
+.order-items > h4,
+.order-total > h4 {
+  font-family: var(--font-5);
   letter-spacing: 0.5px;
   font-size: 1.2rem;
 }
 
-.order-box > div hr {
-  margin: 0.2rem 0 1rem;
+.order-items hr,
+.order-total hr {
+  margin: 0.4rem 0 1rem;
   border: none;
   outline: 0.3px solid var(--yellow);
+}
+
+.order-items a {
+  display: flex;
+  gap: 0.8rem;
+  color: black;
+  align-items: center;
 }
 
 .order--item {
@@ -43,7 +56,6 @@
   background-color: #e7e7e7;
   border-radius: 0.3rem;
   padding: 0.5rem;
-  cursor: pointer;
   transition: 0.3s ease;
 }
 
@@ -69,11 +81,35 @@
 }
 
 .order--quantity {
-  flex-grow: 1;
-  text-align: right;
+  display: flex;
+  gap: 0.4rem;
+  margin-left: 1rem;
 }
 
-.order--quantity span {
+.order--quantity button {
+  background-color: var(--yellow);
+  border-radius: 0.2rem;
+  border: none;
+  font-family: var(--font-1);
+  width: 1.5rem;
+  outline: 1px solid black;
+  font-size: 1.5rem;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+}
+
+.order--quantity button:disabled {
+  background-color: grey;
+  color: white;
+}
+
+.order--quantity input {
+  border: none;
+  outline: 1px solid black;
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+  text-align: center;
+  max-width: 5rem;
   font-family: var(--font-1);
 }
 
@@ -84,4 +120,44 @@
   padding: 0.3rem;
   font-weight: bold;
   letter-spacing: 0.5px;
+}
+
+#remove {
+  margin-left: auto;
+}
+
+#remove button {
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 0.2rem;
+  background-color: var(--highlight-bgcolor);
+  color: white;
+  font-family: var(--font-1);
+  cursor: pointer;
+}
+
+.order-total {
+  padding: 1rem;
+  min-width: 25vw;
+}
+
+.total {
+  padding: 1rem;
+  text-align: center;
+  color: var(--highlight-bgcolor);
+  font-family: var(--font-2);
+  font-size: 4rem;
+  letter-spacing: 3px;
+}
+
+#btn {
+  background-color: var(--yellow);
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.2em 1em;
+  font-family: var(--font-3);
+  font-size: 1.1rem;
+  font-weight: bold;
+  min-width: 15vw;
+  cursor: pointer;
 }

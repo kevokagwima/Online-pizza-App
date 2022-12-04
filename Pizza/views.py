@@ -1,22 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout
 from .models import Dinner_platter, User_Profile, Order, Order_items
-
-def index(request):
-  user_profile = User_Profile.objects.get(user=request.user)
-  dinner_platters = Dinner_platter.objects.all()
-  existing_order = Order.objects.filter(user=request.user, status="Active").first()
-  context = {
-    'user_profile': user_profile,
-    'dinner_platters': dinner_platters,
-    'order': existing_order
-  }
-
-  return render(request, 'index.html', context)
 
 def signup(request):
   if request.method =="POST":
@@ -65,6 +53,21 @@ def signin(request):
   else:
     return render(request, 'signin.html')
 
+@login_required(login_url='/signin')
+def index(request):
+  user_profile = User_Profile.objects.get(user=request.user)
+  dinner_platters = Dinner_platter.objects.all()
+  existing_order = Order.objects.filter(user=request.user, status="Active").first()
+  order_items = Order_items.objects.filter(user=request.user).all()
+  context = {
+    'user_profile': user_profile,
+    'dinner_platters': dinner_platters,
+    'order': existing_order,
+    'order_items': order_items
+  }
+
+  return render(request, 'index.html', context)
+
 def profile(request, pk):
   user = User.objects.get(username=pk)
   user_profile = User_Profile.objects.filter(user=user).first()
@@ -93,15 +96,38 @@ def profile(request, pk):
 
   return render(request, 'profile.html', context)
 
+def delivery(request, pk):
+  user = User.objects.get(username=pk)
+  user_profile = User_Profile.objects.filter(user=user).first()
+  context = {
+    'user': user,
+    'user_profile': user_profile
+  }
+  if request.method == "POST":
+    user_profile.county = request.POST["county"]
+    user_profile.city = request.POST["city"]
+    user_profile.town = request.POST["town"]
+    user_profile.street = request.POST["street"]
+    user_profile.House_no = request.POST["houseno"]
+    user_profile.save()
+    messages.success(request, "Profile updated successfully")
+    return redirect('index')
+
+  return render(request, 'profile.html', context)
+
 @login_required(login_url='/signin')
 def product_description(request, pk):
-  dinner_platter = Dinner_platter.objects.filter(id=pk).first()
+  dinner_platter = Dinner_platter.objects.filter(name=pk).first()
   other_dinner_platter = Dinner_platter.objects.all()
+  existing_order = Order.objects.filter(user=request.user, status="Active").first()
   user_profile = User_Profile.objects.get(user=request.user)
+  order_items = Order_items.objects.filter(user=request.user).all()
   context = {
     'dinner_platter': dinner_platter,
     'user_profile': user_profile,
-    'other_dinner_platter': other_dinner_platter
+    'other_dinner_platter': other_dinner_platter,
+    'order': existing_order,
+    'order_items': order_items
   }
 
   return render(request, "description.html", context)
@@ -117,30 +143,35 @@ def new_order(request, pk):
   if existing_order is None:
     new_order = Order.objects.create(user=request.user)
     new_order.save()
-    new_order_item = Order_items(user=request.user, order=new_order, item=dinner_platter)
-    new_order_item.save()
-    messages.success(request, "A new order has been initiated")
-    return redirect('order_details', pk=new_order.id)
+    if request.method == "POST":
+      new_order_item = Order_items(user=request.user, order=new_order, item=dinner_platter, quantity=request.POST["quantity"], amount=request.POST["size"])
+      new_order_item.save()
+      messages.success(request, "A new order has been initiated")
+      return redirect('order-details', pk=new_order_item.order.id)
   else:
     if all_order_items is not None:
       all_items = []
       for order_items in all_order_items:
         all_items.append(order_items.item)
       if dinner_platter.name in all_items:
-        order_item = Order_items.objects.filter(item=dinner_platter.name).first()
-        order_item.quantity = order_item.quantity + 1
-        order_item.save()
-        messages.info(request, "Your order has been updated")
-        return redirect('order-details', pk=existing_order.id)
+        if request.method == "POST":
+          order_item = Order_items.objects.filter(item=dinner_platter.name).first()
+          order_item.quantity = request.POST["quantity"]
+          order_item.amount = request.POST["size"]
+          order_item.save()
+          messages.info(request, "Your cart has been updated")
+          return redirect('order-details', pk=existing_order.id)
       else:
-        new_order_item = Order_items(user=request.user, order=existing_order, item=dinner_platter.name,quantity=+1)
-        new_order_item.save()
-        messages.info(request, "Your order has been updated")
-        return redirect('order-details', pk=existing_order.id)
+        if request.method == "POST":
+          new_order_item = Order_items(user=request.user, order=existing_order, item=dinner_platter.name,quantity=request.POST["quantity"], amount=request.POST["size"])
+          new_order_item.save()
+          messages.info(request, "Your cart has been updated")
+          return redirect('order-details', pk=existing_order.id)
     else:
-      new_order_item = Order_items(user=request.user, order=existing_order, item=dinner_platter.name, quantity=+1)
-      new_order_item.save()
-      messages.info(request, "Your order has been updated")
+      if request.method == "POST":
+        new_order_item = Order_items(user=request.user, order=existing_order, item=dinner_platter.name,quantity=request.POST["quantity"], amount=request.POST["size"])
+        new_order_item.save()
+        messages.info(request, "Your cart has been updated")
 
     return redirect('order-details', pk=existing_order.id)
 
@@ -148,20 +179,100 @@ def new_order(request, pk):
 def order_details(request, pk):
   existing_order = Order.objects.filter(id=pk).first()
   order_items = Order_items.objects.filter(order=existing_order).all()
+  total = []
   dinners = []
   for order in order_items:
     dinner_platter = Dinner_platter.objects.filter(name=order.item).first()
     dinners.append(dinner_platter)
+    total.append(order.amount*order.quantity)
   user_profile = User_Profile.objects.get(user=request.user)
   context = {
     'order': existing_order,
     'user_profile': user_profile,
     'dinners': dinners,
-    'order_items': order_items
+    'order_items': order_items,
+    'total': sum(total)
   }
 
   return render(request, "order.html", context)
 
+@login_required(login_url='/signin')
+def increase_quantity(request, pk):
+  order_item = Order_items.objects.get(id=pk)
+  if order_item:
+    order_item.quantity = order_item.quantity + 1
+    order_item.save()
+    messages.success(request, "Order item updated successfully")
+  else:
+    messages.error(request, "Order not found")
+
+  return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/signin')
+def decrease_quantity(request, pk):
+  order_item = Order_items.objects.get(id=pk)
+  if order_item:
+    order_item.quantity = order_item.quantity - 1
+    order_item.save()
+    messages.success(request, "Order item updated successfully")
+  else:
+    messages.error(request, "Order not found")
+
+  return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/signin')
+def remove_item(request, pk):
+  order_item = Order_items.objects.get(id=pk)
+  if order_item is None:
+    messages.error(request, "Could not remove the item")
+  else:
+    order_item.delete()
+    messages.success(request, "Item removed successfully")
+  
+  return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/signin')
+def order_summary(request, pk):
+  existing_order = Order.objects.filter(id=pk).first()
+  order_items = Order_items.objects.filter(order=existing_order).all()
+  total = []
+  dinners = []
+  for order in order_items:
+    dinner_platter = Dinner_platter.objects.filter(name=order.item).first()
+    dinners.append(dinner_platter)
+    total.append(order.amount*order.quantity)
+  user_profile = User_Profile.objects.get(user=request.user)
+  context = {
+    'order': existing_order,
+    'user_profile': user_profile,
+    'dinners': dinners,
+    'order_items': order_items,
+    'total': sum(total)
+  }
+
+  return render(request, "summary.html", context)
+
+@login_required(login_url='/signin')
+def confirm_order(request, pk):
+  existing_order = Order.objects.get(id=pk)
+  user_profile = User_Profile.objects.get(user=request.user)
+  if existing_order:
+    if user_profile.county and user_profile.House_no:
+      existing_order.status = "Closed"
+      existing_order.save()
+    else:
+      messages.info(request, "Update your delivery information")
+      return redirect("profile", pk=request.user.username)
+  else:
+    messages.error(request, "Order not found")
+  context = {
+    'order': existing_order,
+    'user_profile': user_profile
+  }
+
+  return render(request, "order-confirmed.html", context)  
+
+@login_required(login_url='/signin')
 def logout_view(request):
   logout(request)
   messages.success(request, "Logout successfull")

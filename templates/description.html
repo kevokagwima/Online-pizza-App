@@ -26,20 +26,26 @@ Online Pizza | {{ dinner_platter.name }}
         architecto
         odio
         corporis.</p>
-      <span id="more-info">Select size</span>
-      <div class="item--sizes">
-        <div class="sizes size-1">
-          <p>Small</p>
-          <span>${{ dinner_platter.price_small }}</span>
+      <form id="form" action="/new-order/{{ dinner_platter.id }}" method="post">
+        {% csrf_token %}
+        <div class="input">
+          <label for="size">Select Size</label>
+          <select name="size" id="size">
+            <option value="{{ dinner_platter.price_small }}">Small - ${{ dinner_platter.price_small }}</option>
+            <option value="{{ dinner_platter.price_large }}">Large - ${{ dinner_platter.price_large }}</option>
+          </select>
         </div>
-        <div class="sizes size-2">
-          <p>Large</p>
-          <span>${{ dinner_platter.price_large }}</span>
+        <div class="input">
+          <label for="quantity">Select Quantity</label>
+          <select name="quantity" id="quantity">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
         </div>
-      </div>
-      <a href="/new-order/{{ dinner_platter.id }}">
-        <button class="btn">Add to Cart</button>
-      </a>
+        <button type="submit" class="btn">Add to Cart</button>
+      </form>
     </div>
   </div>
   <h4 id="info">Same Category</h4>
@@ -47,7 +53,7 @@ Online Pizza | {{ dinner_platter.name }}
     {% for similar in other_dinner_platter %}
     {% if dinner_platter == similar %}
     {% else %}
-    <a href="/description/{{ similar.id }}">
+    <a href="/description/{{ similar.name }}">
       <div class="similar">
         <div class="item">
           <div class="item--img">

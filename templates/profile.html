@@ -35,13 +35,13 @@ Online Pizza | User Profile
   </div>
   <div class="tabcontent" id="Address">
     <h4>Delivery Information</h4>
-    <form action="#" , method="post">
+    <form action="/delivery/{{ user.username }}" , method="post">
       {% csrf_token %}
       <input type="text" name="county" placeholder="County" value="{{ user_profile.county }}">
       <input type="text" name="city" placeholder="City" value="{{ user_profile.city }}">
       <input type="text" name="town" placeholder="Town" value="{{ user_profile.town }}">
       <input type="text" name="street" placeholder="Street" value="{{ user_profile.street }}">
-      <input type="text" name="houseno" placeholder="House No" value="{{ user_profile.house_no }}">
+      <input type="text" name="houseno" placeholder="House No" id="house-no" value="{{ user_profile.House_no }}">
       <button class="btn" type="submit">
         <span class="button--text">Update</span>
       </button>
