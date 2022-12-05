@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/summary.css' %}">
+{% endblock %}
+
+{% block title %}
+Online Pizza | Summary
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <h4>Order Summary</h4>
+  <div class="summary-box">
+    <div class="summary-items">
+      {% if user_profile.county and user_profile.House_no %}
+      <div class="delivery">
+        <h4>
+          Delivery Details
+          <a href="/profile/{{ request.user.username }}">Change</a>
+        </h4>
+        <hr>
+        <div class="delivery-info">
+          <p>
+            <b>Delivery to:</b>
+            {{ user_profile.county }},
+            {{ user_profile.city }},
+            {{ user_profile.town }},
+            {{ user_profile.street }},
+            {{ user_profile.House_no }}
+          </p>
+          <p><b>Phone:</b> {{ user_profile.phone_number }}</p>
+        </div>
+      </div>
+      {% endif %}
+      <div class="order-details">
+        <h4>Order Details</h4>
+        <hr>
+        {% for order in order_items %}
+        <div class="order--item">
+          <div class="item--image">
+            {% for dinner in dinners %}
+            {% if dinner.name == order.item %}
+            <img src="{{ dinner.itemimg.url }}" alt="{{ dinner }}">
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="item--info">
+            <h4>{{ order.item }}</h4>
+          </div>
+          <div class="order--quantity">
+            <span>&times; {{ order.quantity }}</span>
+          </div>
+          <p id="amount">${% widthratio order.amount 1 order.quantity %}</p>
+        </div>
+        {% empty %}
+        <p class="else">No Order Items</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="order-total">
+      <h4>Total</h4>
+      <div class="total">${{ total }}</div>
+    </div>
+    {% if order_items %}
+    <a href="/confirm-order/{{ order.id }}">
+      <button id="btn">Place Order</button>
+    </a>
+    {% else %}
+    <button disabled="disabled" id="btn">Proceed</button>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

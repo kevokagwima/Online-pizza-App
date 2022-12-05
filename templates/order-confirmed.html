@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/order-confirmed.css' %}">
+{% endblock %}
+
+{% block title %}
+Online Pizza | Order Confirmed
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="order-details">
+    <img src="{% static 'Images/complete.png' %}" alt="Confirmed">
+    <h4>Order {{ order.id }}</h4>
+    <hr>
+    <p>Your order has been placed and its awaiting confirmation. Once confirmed your order will be delivered within 2
+      weeks</p>
+  </div>
+</div>
+{% endblock %}

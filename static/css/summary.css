@@ -1,0 +1,136 @@
+.container {
+  padding: 1rem 2rem;
+}
+
+.container > h4 {
+  font-size: 1.8rem;
+  font-family: var(--font-3);
+  text-align: center;
+}
+
+.summary-box {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 1rem;
+}
+
+.summary-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.delivery,
+.order-details {
+  background-color: whitesmoke;
+  padding: 1rem;
+  border-radius: 0.3rem;
+}
+
+.delivery > h4,
+.order-details > h4 {
+  font-family: var(--font-3);
+}
+
+.delivery > h4 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delivery > h4 > a {
+  color: var(--highlight-bgcolor);
+}
+
+.delivery > hr,
+.order-details > hr {
+  border: none;
+  outline: 1px solid rgb(196, 196, 196);
+  margin: 0.2rem 0 0.5rem;
+}
+
+.delivery-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background-color: rgb(233, 231, 231);
+  padding: 1rem;
+}
+
+.delivery-info p {
+  font-family: var(--font-1);
+}
+
+.order--item {
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(233, 231, 231);
+  border-radius: 0.2rem;
+  min-width: 35rem;
+  margin: 0.5rem auto 0;
+}
+
+.item--image {
+  height: 5rem;
+  aspect-ratio: 1/1;
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+
+.item--image img {
+  height: 5rem;
+  width: 5rem;
+  object-fit: contain;
+}
+
+.item--info > h4 {
+  font-family: var(--font-4);
+}
+
+.order-items > h4,
+.order-total > h4 {
+  font-family: var(--font-5);
+  letter-spacing: 0.5px;
+  font-size: 1.2rem;
+}
+
+.order--quantity span {
+  font-family: var(--font-1);
+}
+
+#amount {
+  font-family: var(--font-2);
+  color: var(--highlight-bgcolor);
+}
+
+.order-total {
+  padding: 1rem;
+  min-width: 5vw;
+}
+
+.total {
+  padding: 1rem;
+  text-align: center;
+  color: var(--highlight-bgcolor);
+  font-family: var(--font-2);
+  font-size: 4rem;
+  letter-spacing: 3px;
+}
+
+#btn {
+  background-color: var(--yellow);
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.2em 1em;
+  font-family: var(--font-3);
+  font-size: 1.1rem;
+  min-width: 15vw;
+  letter-spacing: 0.8px;
+  font-weight: bold;
+  cursor: pointer;
+}

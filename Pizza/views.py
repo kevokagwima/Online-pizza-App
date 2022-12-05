@@ -56,14 +56,19 @@ def signin(request):
 @login_required(login_url='/signin')
 def index(request):
   user_profile = User_Profile.objects.get(user=request.user)
-  dinner_platters = Dinner_platter.objects.all()
   existing_order = Order.objects.filter(user=request.user, status="Active").first()
-  order_items = Order_items.objects.filter(user=request.user).all()
+  dinner_platters = Dinner_platter.objects.all()
+  if existing_order:
+    order_items = Order_items.objects.filter(order=existing_order.id).all()
+    context = {
+      'user_profile': user_profile,
+      'dinner_platters': dinner_platters,
+      'order': existing_order,
+      'order_items': order_items
+    }
   context = {
     'user_profile': user_profile,
     'dinner_platters': dinner_platters,
-    'order': existing_order,
-    'order_items': order_items
   }
 
   return render(request, 'index.html', context)
@@ -71,9 +76,11 @@ def index(request):
 def profile(request, pk):
   user = User.objects.get(username=pk)
   user_profile = User_Profile.objects.filter(user=user).first()
+  existing_order = Order.objects.filter(user=request.user, status="Active").first()
   context = {
     'user': user,
-    'user_profile': user_profile
+    'user_profile': user_profile,
+    'order': existing_order
   }
   if request.method == "POST":
     if request.FILES.get("profile") == None:
